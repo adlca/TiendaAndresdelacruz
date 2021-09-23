@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ItemBase from "./components/ItemBase";
 import Navbar from "./components/Navbar";
 
 function AppStore() {
-  const [state, setState] = useState([
+  const [state, setState] = useState(null)
+
+  const dataItems =[
     {
       url: "https://via.placeholder.com/150",
       name: "item1",
@@ -23,7 +25,28 @@ function AppStore() {
       qty: 0,
       id: 3
     }
-  ])
+  ];
+
+  const promesa= async ()=>{
+    return new Promise(
+      ()=>{
+        setTimeout(()=>{console.log("over")},300)
+      }
+    );
+  }
+
+
+  useEffect(async () => {
+    const promesa= new Promise((resolver)=>{
+      setTimeout(()=>{resolver(dataItems)},5000)
+    })
+  
+    promesa.then(result=>{
+      setState(dataItems)
+    })
+
+  }, [])
+
 
   const increaseQtyItems = (itemId,value) => {
     const result=state.map(
